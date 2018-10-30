@@ -1,13 +1,7 @@
 CREATE TABLESPACE JUAN_VALDEZ
-DATAFILE 'D:\USIL\CLASES\2018-02\Implementacion y gestion de bases de datos\guardados\bases_de_datos'
-SIZE 100M; 
+DATAFILE 'D:\USIL\CLASES\2018-02\Implementacion y gestion de bases de datos\guardados\bases_de_datos\JUAN_VALDEZ.DBF'
+SIZE 100M;
 
-
-
-
-
-
---CREACIÓN DE TABLAS 
 
 CREATE TABLE Categoria
 (
@@ -138,7 +132,8 @@ edad                    NUMBER          NOT NULL
 
 CREATE TABLE Administrativo
 (
-adminis_id  NUMBER  NOT NULL    REFERENCES  Trabajador
+adminis_id  NUMBER  NOT NULL    REFERENCES  Trabajador,
+PRIMARY KEY(adminis_id)
 );
 
 CREATE TABLE Administrativo_Sucursal
@@ -150,7 +145,8 @@ sucursal_id NUMBER  NOT NULL    REFERENCES  Sucursal
 CREATE TABLE Operativo
 (
 operat_id   NUMBER  REFERENCES  Trabajador,
-sucursal_id NUMBER  REFERENCES  Sucursal
+sucursal_id NUMBER  REFERENCES  Sucursal,
+PRIMARY KEY(operat_id)
 );
 
 
