@@ -79,15 +79,6 @@ CREATE TABLE Insumo
 );
 
 
-CREATE TABLE Insumo_Proveedor
-(
-     precio_venta       NUMBER, 
-     cantidad           NUMBER,
-     precio_unitario    NUMBER
-);
-
-
-
 CREATE TABLE Lote
 (
     lote_id             NUMBER      PRIMARY KEY,
@@ -102,16 +93,21 @@ CREATE TABLE Lote
 CREATE TABLE Bebida_Insumo
 (
 insumo_id       NUMBER  REFERENCES Insumo,
-bebida_id       NUMBER  REFERENCES Productos_Bebida
+bebida_id       NUMBER  REFERENCES Bebida
 );
 
-
+CREATE TABLE Sucursal
+(
+sucursal_id     NUMBER          PRIMARY KEY,
+pais            VARCHAR2(20)    NOT NULL,
+region          VARCHAR2(20)    NOT NULL,
+direccion       CHAR(30)        NOT NULL
+);
 
 
 CREATE TABLE Recibo
 (
     recibo_id       NUMBER  PRIMARY KEY,
-    cantidad        NUMBER  NOT NULL,
     precio_total    NUMBER  NOT NULL,
     fecha_venta     DATE    NOT NULL,
     cliente_id      NUMBER  REFERENCES Cliente,
@@ -124,27 +120,20 @@ CREATE TABLE Detalle_Recibo
     recibo_id       NUMBER  NOT NULL    REFERENCES  Recibo
 );
 
-CREATE TABLE Sucursal
-(
-sucursal_id     NUMBER          PRIMARY KEY,
-pais            VARCHAR2(20)    NOT NULL,
-region          VARCHAR2(20)    NOT NULL,
-direccion       CHAR(30)        NOT NULL
-);
 
 CREATE TABLE Trabajador
 (
-trabajador_id           NUMBER      PRIMARY KEY,
-dni                     CHAR(7)     NOT NULL,
-nombre_Trabajador       VARCHAR2(20),
-apellidos_Trabajador    VARCHAR2(20),
-puestoID                NUMBER      REFERENCES puesto_trabajo,
-telefono                CHAR(8)     NOT NULL,
+trabajador_id           NUMBER          PRIMARY KEY,
+nombre                  VARCHAR2(25)    NOT NULL, 
+apel_mat                VARCHAR2(25)    NOT NULL,
+apel_pat                VARCHAR2(25)    NOT NULL,
+dni                     CHAR(8)         NOT NULL,
+puesto                  VARCHAR(50)     NOT NULL,
+telefono                CHAR(8)         NOT NULL,
 correo                  VARCHAR2(200),
 direccion               VARCHAR2(200),
-fecha_contratacion      DATE        NOT NULL,
-edad                    NUMBER      NOT NULL,
-sucursalid              NUMBER      REFERENCES sucursal
+fecha_contratacion      DATE            NOT NULL,
+edad                    NUMBER          NOT NULL
 );
 
 CREATE TABLE Administrativo
@@ -160,7 +149,8 @@ sucursal_id NUMBER  NOT NULL    REFERENCES  Sucursal
 
 CREATE TABLE Operativo
 (
-operat_id   NUMBER  REFERENCES  Trabajador
+operat_id   NUMBER  REFERENCES  Trabajador,
+sucursal_id NUMBER  REFERENCES  Sucursal
 );
 
 
