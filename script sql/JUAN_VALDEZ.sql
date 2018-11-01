@@ -40,26 +40,25 @@ CREATE TABLE Proveedor
 CREATE TABLE Producto
 (
 producto_id NUMBER  PRIMARY KEY,
-precio      DECIMAL(10,2) NOT NULL
+nombre      VARCHAR2(50)  NOT NULL,
+precio      DECIMAL(10,2) NOT NULL,
+descripcion VARCHAR2(100)  NOT NULL,
+promocion   CHAR(10)      NULL
 );
 
 CREATE TABLE Bebida
 (
     bebida_id       NUMBER          NOT NULL    REFERENCES Producto,
-    nombre          VARCHAR2(100)   NOT NULL,
-    tam             VARCHAR2(10)    NULL,
-    precio_unitario NUMBER          NOT NULL,
-    promocion       CHAR(10)        NULL,
+    tam             VARCHAR2(10)    NULL, --tamanio de presentacion
+    temperatura     VARCHAR2(10)    ,   -- fria o caliente
     PRIMARY KEY(bebida_id)
 );
 
 CREATE TABLE Acompaniamiento
 (
-acomp_id        NUMBER          NOT NULL    REFERENCES Producto,
-nombre          VARCHAR2(20)    NOT NULL,
-precio_unitario NUMBER          NOT NULL,
-promocion       CHAR(10)        NULL,
-PRIMARY KEY(acomp_id)
+    acomp_id        NUMBER          NOT NULL    REFERENCES Producto,
+    sabor           VARCHAR2(10)    , -- salado o dulce
+    PRIMARY KEY(acomp_id)
 );
 
 CREATE TABLE Insumo
@@ -68,7 +67,7 @@ CREATE TABLE Insumo
     nombre          VARCHAR2(30) NOT NULL,
     tipo            VARCHAR2(30) NOT NULL,
     costo_unidad    NUMBER       NOT NULL,
-    cantidad        NUMBER       NOT NULL,  
+    cantidad        NUMBER       NOT NULL,
     proveedor_id    NUMBER       REFERENCES Proveedor
 );
 
@@ -87,8 +86,11 @@ CREATE TABLE Lote
 CREATE TABLE Bebida_Insumo
 (
 insumo_id       NUMBER  REFERENCES Insumo,
-bebida_id       NUMBER  REFERENCES Bebida
+bebida_id       NUMBER  REFERENCES Bebida,
+cantidad        DECIMAL, -- cuanto de un insumo contiene el producto
+primary key(insumo_id,bebida_id)
 );
+
 
 CREATE TABLE Sucursal
 (
@@ -105,15 +107,15 @@ CREATE TABLE Recibo
     precio_total    NUMBER  NOT NULL,
     fecha_venta     DATE    NOT NULL,
     cliente_id      NUMBER  REFERENCES Cliente,
-    sucursal_id     NUMBER  REFERENCES Sucursal
+    sucursal_id     NUMBER  NOT NULL REFERENCES Sucursal
 );
 
 CREATE TABLE Detalle_Recibo
 (
     producto_id     NUMBER  NOT NULL    REFERENCES  Producto,
-    recibo_id       NUMBER  NOT NULL    REFERENCES  Recibo
+    recibo_id       NUMBER  NOT NULL    REFERENCES  Recibo,
+    primary key(producto_id, recibo_id)
 );
-
 
 CREATE TABLE Trabajador
 (
@@ -139,13 +141,15 @@ PRIMARY KEY(adminis_id)
 CREATE TABLE Administrativo_Sucursal
 (
 adminis_id  NUMBER  NOT NULL    REFERENCES  Administrativo,
-sucursal_id NUMBER  NOT NULL    REFERENCES  Sucursal
+sucursal_id NUMBER  NOT NULL    REFERENCES  Sucursal,
+primary key(adminis_id, sucursal_id)
 );
 
 CREATE TABLE Operativo
 (
 operat_id   NUMBER  REFERENCES  Trabajador,
 sucursal_id NUMBER  REFERENCES  Sucursal,
+puesto      VARCHAR2(50),
 PRIMARY KEY(operat_id)
 );
 
